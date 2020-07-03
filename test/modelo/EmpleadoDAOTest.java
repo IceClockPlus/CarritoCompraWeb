@@ -59,7 +59,7 @@ public class EmpleadoDAOTest {
        
         //Arrange
         String Rut = "333-3";
-        String user = "pepe andres";
+        String user = "pepe";
         EmpleadoDAO instance = new EmpleadoDAO();
         Empleado expResult = null;
         //Act
@@ -82,11 +82,11 @@ public class EmpleadoDAOTest {
         System.out.println("agregar");
         Empleado em = new Empleado(7,"444-4","Carlos Sandoval","489151","1","CarlSa0");
         EmpleadoDAO instance = new EmpleadoDAO();
-        int expResult = 1;
-        int result = instance.agregar(em);
+        boolean expResult = true;
+        boolean result = instance.agregar(em);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        if(result == 0){
+        if(result == false){
             fail("Empleado no agregado.");
         }
         
@@ -96,10 +96,10 @@ public class EmpleadoDAOTest {
         System.out.println("Agregar empleado existente");
         Empleado em = new Empleado(2,"123-4","Roman Riquelme","489151","1","CarlSa0");
         EmpleadoDAO instance = new EmpleadoDAO();
-        int expResult = 0;
-        int result = instance.agregar(em);
+        boolean expResult = false;
+        boolean result = instance.agregar(em);
         assertEquals(expResult, result);
-        if(result==1){
+        if(result==true){
             fail("Empleado ya existente agregado");
         }
 
@@ -142,8 +142,8 @@ public class EmpleadoDAOTest {
         System.out.println("actualizar");
         Empleado em = new Empleado(2,"123-4","Carlos Hernandez","941594812","1","Jo46");
         EmpleadoDAO instance = new EmpleadoDAO();
-        int expResult = 1;
-        int result = instance.actualizar(em);
+        boolean expResult = true;
+        boolean result = instance.actualizar(em);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
     }
@@ -153,8 +153,8 @@ public class EmpleadoDAOTest {
         System.out.println("actualizar empleado inexistente");
         Empleado em = new Empleado(1000,"999-9","Denisse Bravo","48944949","1","Denn94");
         EmpleadoDAO instance = new EmpleadoDAO();
-        int expResult = 0;
-        int result = instance.actualizar(em);
+        boolean expResult = false;
+        boolean result = instance.actualizar(em);
         assertEquals(expResult, result);
     }
     
@@ -164,7 +164,9 @@ public class EmpleadoDAOTest {
     @Test
     public void testdeleteEmpleado(){
         System.out.println("Eliminar empleado");
+        
         //Arrange
+        boolean expected = true;
         Empleado emp = new Empleado();
         emp.setNom("Alex Mason");
         emp.setRut("44444444-4");
@@ -175,23 +177,14 @@ public class EmpleadoDAOTest {
         EmpleadoDAO instance = new EmpleadoDAO();
         instance.agregar(emp);
         
-        //Lista de empleados antes de realizar la eliminacion
-        List listBefore = instance.listar();
-        
         //Obtener objeto empleado de lista, el cual se encuentra al final de esta
-        Empleado e= (Empleado) listBefore.get(listBefore.size()-1);
+        Empleado e= instance.validar(emp.getRut(), emp.getUser());
         
         //Act
-        instance.delete(e.getId());
-        
-        //Lista despues de la eliminacion
-        List listAfter = instance.listar();
+        boolean result = instance.delete(e.getId());
         
         //Assert
-        System.out.println("Numero de empleado antes de la eliminación: "+listBefore.size());
-        System.out.println("Numero de empleado despues de la eliminación: "+listAfter.size());
-
-        assertEquals(listBefore.size()-1, listAfter.size());
+        assertEquals(expected, result);
     }
     
     /**
@@ -203,20 +196,15 @@ public class EmpleadoDAOTest {
         System.out.println("Eliminar empleado inexistente");
         //Arrange
         int id = 1000;
+        boolean expected = false;
         EmpleadoDAO instance = new EmpleadoDAO();
-        //Lista de empleados antes de la eliminacion y a comparar
-        List listBefore = instance.listar();
         
         //Arrange
-        instance.delete(id);
-        //Lista tras la ejecución de delete
-        List listAfter = instance.listar();
+        boolean result = instance.delete(id);
+
         
         //Assert 
-        System.out.println("Numero de empleado antes de la eliminación: "+listBefore.size());
-        System.out.println("Numero de empleado despues de la eliminación: "+listAfter.size());
-        //Revisar que ambas listas contengan las mismas cantidades
-        assertEquals(listBefore.size(), listAfter.size());
+        assertEquals(expected,result);
     }
 
     

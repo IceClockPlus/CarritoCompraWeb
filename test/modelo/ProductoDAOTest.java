@@ -72,13 +72,13 @@ public class ProductoDAOTest {
         ProductoDAO instance = new ProductoDAO();
         
         //Act
-        int result = instance.actualizarStock(id, stock);
+        boolean result = instance.actualizarStock(id, stock);
         
         //Assert
         
-        int expResult = 1;
+        boolean expResult = true;
         assertEquals(expResult, result);
-        if(result==0){
+        if(result==false){
             fail("El stock del producto no fue actualizado");
         }        
     }
@@ -96,8 +96,8 @@ public class ProductoDAOTest {
         ProductoDAO instance = new ProductoDAO();
         
         //Act
-        int resultado = instance.actualizarStock(id, stock);
-        int resEsperado = 0;
+        boolean resultado = instance.actualizarStock(id, stock);
+        boolean resEsperado = false;
         
         //Assert 
         assertEquals(resEsperado,resultado);
@@ -163,13 +163,13 @@ public class ProductoDAOTest {
         
         //Act
         /*Ejecucion de funcion para agregar producto*/
-        int result = instance.agregar(p);
+        boolean result = instance.agregar(p);
         //Assert   
-        int valorEsperado = 1;
+        boolean valorEsperado = true;
         assertEquals(valorEsperado, result);
         
         // TODO review the generated test code and remove the default call to fail.
-        if(result == 0){
+        if(result == false){
             fail("Producto no fue agregado");
         }
     }
@@ -193,13 +193,13 @@ public class ProductoDAOTest {
         /*Instancia ProductoDAO*/
         ProductoDAO instance = new ProductoDAO();
         //Act
-        int result = instance.actualizar(p);
+        boolean result = instance.actualizar(p);
        
         //Assert
-        int expResult = 1;
+        boolean expResult = true;
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        if(result==0){
+        if(result==false){
            fail("El producto no fue actualizado.");
 
         }
@@ -213,7 +213,7 @@ public class ProductoDAOTest {
     {
         System.out.println("actualizar producto inexistente");
         //Arrange
-        int valorEsperado =0;
+        boolean valorEsperado =false;
         Producto p = new Producto();
         p.setId(1300);
         p.setDescripcion("Producto que no existe");
@@ -221,7 +221,7 @@ public class ProductoDAOTest {
         
         ProductoDAO instance = new ProductoDAO();
         //Act
-        int resultado = instance.actualizar(p);
+        boolean resultado = instance.actualizar(p);
        
         //Assert
         assertEquals(valorEsperado,resultado);

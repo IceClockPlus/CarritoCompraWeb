@@ -59,7 +59,7 @@ public class EmpleadoDAO {
         }
         return lista;
     }
-    public int agregar(Empleado em){ 
+    public boolean agregar(Empleado em){ 
         String sql="insert into empleado(Rut, Nombres, Telefono,Estado,User)values(?,?,?,?,?)";
         try {
             con=cn.getConnection();
@@ -69,12 +69,14 @@ public class EmpleadoDAO {
             ps.setString(3, em.getTel());
             ps.setString(4, em.getEstado());
             ps.setString(5, em.getUser());
-            ps.executeUpdate();
-            r=1;
+            if( ps.executeUpdate()>0 ){
+                return true;
+            }
+            
         } catch (Exception e) {
-            r=0;
+            return false;
         }
-        return r;
+        return false;
         
     }
     public Empleado listarId(int id){
@@ -95,9 +97,8 @@ public class EmpleadoDAO {
         }
         return emp;
     }
-    public int actualizar(Empleado em){
+    public boolean actualizar(Empleado em){
         String sql="update empleado set Rut=?, Nombres=?, Telefono=?,Estado=?,User=? where IdEmpleado=?";
-        r=1;
         try {
             con=cn.getConnection();
             ps=con.prepareStatement(sql);
@@ -107,21 +108,28 @@ public class EmpleadoDAO {
             ps.setString(4, em.getEstado());
             ps.setString(5, em.getUser());
             ps.setInt(6, em.getId());
-            ps.executeUpdate();
-            r=1;
+            if(ps.executeUpdate()>0){
+                return true;
+            }
+            
         } catch (Exception e) {
-            r=0;
+            return false;
         }
-        return r;
+        return false;
     }
-    public void delete(int id){
-        String sql="delete from empleado where IdEmpleado="+id;
+    public boolean delete(int id){
+        String sql="delete from empleado where IdEmpleado=?";
         try {
             con=cn.getConnection();
             ps=con.prepareStatement(sql);
-            ps.executeUpdate();
+            ps.setInt(1, id);
+            if(ps.executeUpdate()>0){
+                return true;
+            }
         } catch (Exception e) {
+            return false;
         }
+        return false;
     }
     
 }
