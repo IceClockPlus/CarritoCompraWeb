@@ -76,6 +76,9 @@ public class Producto {
     }
 
     public void setStock(int stock) {
+        if(stock <0 ){
+            throw new IllegalArgumentException("Stock no debe ser negativo");
+        }
         this.stock = stock;
     }
     

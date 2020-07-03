@@ -1,3 +1,4 @@
+//Notificación de confirmacion para elminar un producto del carro de compra
 $(document).ready(function () {
     $("tr #btnDelete").click(function () {
         var idp = $(this).parent().find("#idp").val();

@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -42,27 +43,36 @@ public class ProductoDAO {
                p.setFoto(rs.getBinaryStream(3));
                p.setDescripcion(rs.getString(4));
                p.setPrecio(rs.getDouble(5));
-               p.setStock(rs.getInt(6));
-               
+               p.setStock(rs.getInt(6));     
            }
+           
         }catch(Exception e) {
-            
+            return null;
         }
         return p;
     }
     
-    public int actualizarStock(int id, int stock) {
+    public boolean actualizarStock(int id, int stock) {
         String sql = "update producto set stock =? where idProducto = ?";
         try {
+            Producto prod = new Producto();
+            prod.setId(id);
+            prod.setStock(stock);
+            
             con =cn.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setInt(1, stock);
-            ps.setInt(2, id);
-            ps.executeUpdate();
+            ps.setInt(1, prod.getId());
+            ps.setInt(2, prod.getStock());
+            if(ps.executeUpdate()>0){
+                return true;
+            }
+        
         }catch(Exception ex) {
-            
+            ex.getStackTrace();
+            return false;
         }
-        return r;
+        
+        return false;
     }
     
     public Producto listarId(int id){
@@ -96,14 +106,19 @@ public class ProductoDAO {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery(); 
             while(rs.next()) {
-                Producto p = new Producto();
-                p.setId(rs.getInt(1));
-                p.setNombres(rs.getString(2));
-                p.setFoto(rs.getBinaryStream(3));
-                p.setDescripcion(rs.getString(4));
-                p.setPrecio(rs.getDouble(5));
-                p.setStock(rs.getInt(6));
-                productos.add(p);
+                try{
+                    Producto p = new Producto();
+                    p.setId(rs.getInt(1));
+                    p.setNombres(rs.getString(2));
+                    p.setFoto(rs.getBinaryStream(3));
+                    p.setDescripcion(rs.getString(4));
+                    p.setPrecio(rs.getDouble(5));
+                    p.setStock(rs.getInt(6));
+                    productos.add(p);
+                }catch(IllegalArgumentException iae){
+                    //Excepcion cuando el stock de un producto es negativo
+                    iae.getStackTrace();
+                }              
             }
             
         } catch(Exception e){
@@ -138,7 +153,7 @@ public class ProductoDAO {
         
     }
     
-    public int agregar(Producto p){ 
+    public boolean agregar(Producto p){ 
         String sql="insert into producto(Nombres, Descripcion, Precio, Stock)values(?,?,?,?)";
         try {
             con=cn.getConnection();
@@ -147,14 +162,17 @@ public class ProductoDAO {
             ps.setString(2, p.getDescripcion());
             ps.setDouble(3, p.getPrecio());
             ps.setInt(4, p.getStock());
-            r = ps.executeUpdate();
+           if(ps.executeUpdate()>0 ){
+               return true;
+           }
         } catch (Exception e) {
+            return false;
         }
-        return r;
+        return false;
         
     }
     
-    public int actualizar(Producto p){
+    public boolean actualizar(Producto p){
         String sql="update producto set Nombres=?, Descripcion=?, Precio=?, Stock=? where idProducto=?";
         try {
             con=cn.getConnection();
@@ -164,20 +182,29 @@ public class ProductoDAO {
             ps.setDouble(3, p.getPrecio());
             ps.setInt(4, p.getStock());
             ps.setInt(5, p.getId());
-            r = ps.executeUpdate();
+            if(ps.executeUpdate()>0){
+                return true;
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            return false;
         }
-        return r;
+        return false;
     }
-    public void delete(int id){
-        String sql="delete from producto where IdProducto="+id;
+    public boolean delete(int id){
+        String sql="delete from producto where IdProducto=?";
         try {
             con=cn.getConnection();
             ps=con.prepareStatement(sql);
-            ps.executeUpdate();
+            ps.setInt(1, id);
+            if(ps.executeUpdate()>0){
+                return true;
+            }
         } catch (Exception e) {
+            e.getStackTrace();
+            return false;
         }
+        return false;
     }
     
 }
