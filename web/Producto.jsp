@@ -43,9 +43,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombres</th>
-                                    <th>Precio</th>
+                                    <th>Descripción</th>
+                                    <th>Precio</th>                                    
                                     <th>Stock</th>                                    
-                                    <th>ESTADO</th>                                    
                                     <th>ACCIONES</th>
                                 </tr>
                             </thead>
