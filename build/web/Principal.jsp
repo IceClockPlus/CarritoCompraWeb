@@ -17,7 +17,7 @@
                         <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="Controlador?menu=Listar&accion=Producto" target="myFrame">Producto</a>
                     </li>
                     <li class="nav-item">
-                        <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="Controlador?menu=Listar&accion=Empleado" target="myFrame">Empleado</a>
+                        <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="ControladorEmpleado?accion=Listar" target="myFrame">Empleado</a>
                     </li>
                     <li class="nav-item">
                         <a style="margin-left: 10px; border: none" class="btn btn-outline-light" href="Validar?accion=Salir" target="myFrame">Cerrar Sesión de ${usuario.getNom()}</a>
