@@ -59,6 +59,7 @@ public class ControladorEmpleado extends HttpServlet {
                 break;
             case "Eliminar":
                 this.eliminarEmpleado(request, response);
+                break;
             default:
                 this.listarEmpleados(request, response);
                 break;
