@@ -12,25 +12,25 @@
             <div class="col-sm-4">
                 <div class="card">
                     <div class="card-body">
-                        <form action="Controlador?accion=Producto" method="POST">
+                        <form action="ControladorProducto" method="POST">
                             <div class="form-group">
                                 <label>Producto</label>
-                                <input type="text" value="${producto.getNombres()}" name="txtNombre" class="form-control">
+                                <input type="text" required="required" value="${producto.getNombres()}" name="txtNombre" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Descripción </label>
-                                <input type="text" value="${producto.getDescripcion()}" name="txtDescrip" class="form-control">
+                                <input type="text" required="required" value="${producto.getDescripcion()}" name="txtDescrip" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Precio</label>
-                                <input type="text" value="${producto.getPrecio()}" name="txtPrecio" class="form-control">
+                                <input type="text" required="required" value="${producto.getPrecio()}" name="txtPrecio" class="form-control">
                             </div>
                             <div class="form-group">
                                 <label>Stock</label>
-                                <input type="text" value="${producto.getStock()}" name="txtStock" class="form-control">
+                                <input type="text" required="required" value="${producto.getStock()}" name="txtStock" class="form-control">
                             </div>                        
-                            <input type="submit" name="menu" value="Agregar" class="btn btn-primary">
-                            <input type="submit" name="menu" value="Actualizar" class="btn btn-success">
+                            <input type="submit" name="accion" value="Agregar" class="btn btn-primary">
+                            <input type="submit" name="accion" value="Actualizar" class="btn btn-success">
                         </form>
                     </div>                         
                 </div>
@@ -43,9 +43,9 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombres</th>
-                                    <th>Precio</th>
+                                    <th>Descripción</th>
+                                    <th>Precio</th>                                    
                                     <th>Stock</th>                                    
-                                    <th>ESTADO</th>                                    
                                     <th>ACCIONES</th>
                                 </tr>
                             </thead>
@@ -58,8 +58,8 @@
                                         <td>${p.getPrecio()}</td>
                                         <td>${p.getStock()}</td>                                
                                         <td>
-                                            <a class="btn btn-warning" href="Controlador?accion=Producto&menu=Editar&id=${p.getId()}">Editar</a>
-                                            <a class="btn btn-danger" href="Controlador?accion=Producto&menu=Delete&id=${p.getId()}">Delete</a>
+                                            <a class="btn btn-warning" href="ControladorProducto?accion=Editar&id=${p.getId()}">Editar</a>
+                                            <a class="btn btn-danger" href="ControladorProducto?accion=Eliminar&id=${p.getId()}">Delete</a>
                                         </td>
                                     </tr>
                                 </c:forEach>
