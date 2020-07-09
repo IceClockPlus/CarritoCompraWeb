@@ -23,7 +23,7 @@ $(document).ready(function () {
                 });
     });
     function eliminar(idp) {
-        var url = "ControladorProducto?accion=Eliminar";
+        var url = "Controlador?accion=Delete";
         $.ajax({
             type: 'POST',
             url: url,

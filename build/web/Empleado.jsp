@@ -66,7 +66,7 @@
                                                         <td>${em.getEstado()}</td>
                                                         <td>${em.getUser()}</td>                    
                                                         <td>
-                                                            <a class="btn btn-warning"href="Controlador?accion=Empleado&menu=Editar&id=${em.getId()}">Editar</a>
+                                                            <a class="btn btn-warning"href="ControladorEmpleado?accion=Editar&id=${em.getId()}">Editar</a>
                                                             <a class="btn btn-danger" href="ControladorEmpleado?accion=Eliminar&id=${em.getId()}">Delete</a>
                                                         </td>
                                                     </tr>

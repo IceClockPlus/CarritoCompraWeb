@@ -183,7 +183,7 @@ public class ControladorProducto extends HttpServlet {
         
         //Se realiza la busqueda del producto con la id asignada a idProdMod
         Producto p = prodDAO.listarId(idProdMod);
-        //Se 
+        //Se rellena los campos del formulario con los datos obtenidos de la busqueda anterior
         request.setAttribute("producto", p);
         this.listarProductos(request, response);
 

@@ -4,6 +4,7 @@ import config.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,8 @@ public class EmpleadoDAO {
                 em.setRut(rs.getString("Rut"));
                 em.setNom(rs.getString("Nombres"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.getStackTrace();
             em=null;
         }
         return em;
@@ -55,7 +57,8 @@ public class EmpleadoDAO {
                 em.setUser(rs.getString(6));
                 lista.add(em);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.getStackTrace();
         }
         return lista;
     }
@@ -73,7 +76,8 @@ public class EmpleadoDAO {
                 return true;
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.getSQLState();
             return false;
         }
         return false;
@@ -93,7 +97,9 @@ public class EmpleadoDAO {
                 emp.setEstado(rs.getString(5));
                 emp.setUser(rs.getString(6));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.getStackTrace();
+            return null;
         }
         return emp;
     }
@@ -112,9 +118,12 @@ public class EmpleadoDAO {
                 return true;
             }
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.getStackTrace();
             return false;
         }
+        System.out.println("El producto no se agrego");
+
         return false;
     }
     public boolean delete(int id){
@@ -126,7 +135,8 @@ public class EmpleadoDAO {
             if(ps.executeUpdate()>0){
                 return true;
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            e.getStackTrace();
             return false;
         }
         return false;
