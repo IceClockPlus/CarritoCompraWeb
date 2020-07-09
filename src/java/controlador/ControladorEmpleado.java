@@ -7,6 +7,7 @@ package controlador;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -23,6 +24,7 @@ import modelo.EmpleadoDAO;
 public class ControladorEmpleado extends HttpServlet {
     
     private EmpleadoDAO emplDAO;
+    private int idEdit;
     
     @Override
     public void init(){
@@ -49,11 +51,20 @@ public class ControladorEmpleado extends HttpServlet {
             case "Agregar":
                 this.agregarEmpleado(request, response);
                 break;
+            case "Editar":
+                this.editarEmpleado(request, response);
+                break;
+            case "Actualizar":
+                this.actualizarEmpleado(request, response);
+                break;
             case "Eliminar":
                 this.eliminarEmpleado(request, response);
+            default:
+                this.listarEmpleados(request, response);
+                break;
         }
-        }catch(SQLException ex){
-            throw new ServletException(ex);
+        }catch(IOException | SQLException | ServletException ex){
+            ex.getStackTrace();
         }
         
         
@@ -130,7 +141,7 @@ public class ControladorEmpleado extends HttpServlet {
             throws SQLException, IOException, ServletException{
         
         //Obtener todos los valores ingresados en el formulario
-        String rut = request.getParameter("rut");
+        String rut = request.getParameter("txtRut");
         String nom = request.getParameter("txtNombres");
         String tel = request.getParameter("txtTel");
         String est = request.getParameter("txtEstado");
@@ -145,10 +156,42 @@ public class ControladorEmpleado extends HttpServlet {
         empl.setUser(user);
         
         //Ejecución de la funcion para agregar el empleado a la base de datos
-        emplDAO.agregar(empl);     
+        this.emplDAO.agregar(empl);
+
         this.listarEmpleados(request, response);
     }
     
+    private void editarEmpleado(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException{
+        idEdit = Integer.parseInt(request.getParameter("id"));
+        Empleado emp = emplDAO.listarId(idEdit);
+    
+        //Se rellena los campos del formulario con los datos obtenidos de la busqueda anterior
+        request.setAttribute("empleado", emp);
+        this.listarEmpleados(request, response);
+    }
+    
+    private void actualizarEmpleado(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException{
+        String rut = request.getParameter("txtRut");
+        String nom = request.getParameter("txtNombres");
+        String tel = request.getParameter("txtTel");
+        String estado = request.getParameter("txtEstado");
+        String user = request.getParameter("txtUser");
+        
+        Empleado empl = new Empleado();
+        empl.setId(idEdit);
+        empl.setRut(rut);
+        empl.setNom(nom);
+        empl.setTel(tel);
+        empl.setEstado(estado);
+        empl.setUser(user);
+        
+        emplDAO.actualizar(empl);
+        
+        this.listarEmpleados(request, response);
+        
+    }
     
     private void eliminarEmpleado(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException{

@@ -30,26 +30,6 @@ public class EmpleadoDAOTest {
         
     }
     
-    
-    @BeforeClass
-    public static void setUpClass() throws SQLException {  
-        
-    }
-    
-    @AfterClass
-    public static void tearDownClass() {
-    }
-    
-    @Before
-    public void setUp() {
-        
-    }
-
-    @After
-    public void tearDown() throws SQLException {
-        
-    }
-
     /**
      * Test of validar method, of class EmpleadoDAO.
      */
