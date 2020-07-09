@@ -61,15 +61,12 @@ public class EmpleadoDAOTest {
         String Rut = "333-3";
         String user = "pepe";
         EmpleadoDAO instance = new EmpleadoDAO();
-        Empleado expResult = null;
         //Act
         Empleado result = instance.validar(Rut, user);
         //Assert
         assertEquals(Rut, result.getRut());
         // TODO review the generated test code and remove the default call to fail.
-        if(result.equals(null)){
-            fail("El resultado entregado es nulo.");
-        }
+       
  
     }
 
@@ -178,7 +175,8 @@ public class EmpleadoDAOTest {
         instance.agregar(emp);
         
         //Obtener objeto empleado de lista, el cual se encuentra al final de esta
-        Empleado e= instance.validar(emp.getRut(), emp.getUser());
+        List<Empleado> empleados = instance.listar();
+        Empleado e =(Empleado)empleados.get(empleados.size()-1);
         
         //Act
         boolean result = instance.delete(e.getId());

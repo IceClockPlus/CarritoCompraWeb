@@ -1,1 +1,0 @@
-. 2javaXIhr(src/java/controlador/ControladorIMG.java

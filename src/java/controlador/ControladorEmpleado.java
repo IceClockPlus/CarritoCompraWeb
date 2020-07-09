@@ -7,16 +7,27 @@ package controlador;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.Empleado;
+import modelo.EmpleadoDAO;
 
 /**
  *
  * @author docencia
  */
 public class ControladorEmpleado extends HttpServlet {
+    
+    private EmpleadoDAO emplDAO;
+    
+    @Override
+    public void init(){
+        emplDAO = new EmpleadoDAO();
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,12 +41,21 @@ public class ControladorEmpleado extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
-        switch(accion){
-            case "Principal":
-                request.getRequestDispatcher("Principal.jsp").forward(request, response);
+        try{
+            switch(accion){
+            case "Listar":
+                this.listarEmpleados(request,response);
                 break;
-                
+            case "Agregar":
+                this.agregarEmpleado(request, response);
+                break;
+            case "Eliminar":
+                this.eliminarEmpleado(request, response);
         }
+        }catch(SQLException ex){
+            throw new ServletException(ex);
+        }
+        
         
     }
 
@@ -75,7 +95,67 @@ public class ControladorEmpleado extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Short description ControladorEmpleado";
     }// </editor-fold>
+    
+    /**
+     * Llama a la función listar de la clase EmpleadoDAO, el cual obtiene una lista
+     * de todos los empleados registrados
+     * 
+     * @param request
+     * @param response
+     * @throws SQLException si existe algún error con la conexion a la base de datos
+     * @throws IOException
+     * @throws ServletException 
+     */
+    private void listarEmpleados(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException{
+        List<Empleado> empleados = emplDAO.listar();
+        request.setAttribute("empleados", empleados);
+        request.getRequestDispatcher("Empleado.jsp").forward(request, response);
+        
+    }
+    
+    /**
+     * Llama a la función agregar de la clase EmpleadoDAO, el cual permite agregar un nuevo 
+     * empleado a la base de datos
+     * 
+     * @param request
+     * @param response
+     * @throws SQLException
+     * @throws IOException
+     * @throws ServletException 
+     */
+    private void agregarEmpleado(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException{
+        
+        //Obtener todos los valores ingresados en el formulario
+        String rut = request.getParameter("rut");
+        String nom = request.getParameter("txtNombres");
+        String tel = request.getParameter("txtTel");
+        String est = request.getParameter("txtEstado");
+        String user = request.getParameter("txtUser");
+        
+        //Crecion de objeto Empleado y asignacion de valores a sus variables
+        Empleado empl = new Empleado();
+        empl.setRut(rut);
+        empl.setNom(nom);
+        empl.setTel(tel);
+        empl.setEstado(est);
+        empl.setUser(user);
+        
+        //Ejecución de la funcion para agregar el empleado a la base de datos
+        emplDAO.agregar(empl);     
+        this.listarEmpleados(request, response);
+    }
+    
+    
+    private void eliminarEmpleado(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException{
+        int idEmpleado = Integer.parseInt(request.getParameter("id"));
+        emplDAO.delete(idEmpleado);
+        this.listarEmpleados(request, response);
+
+    }
 
 }

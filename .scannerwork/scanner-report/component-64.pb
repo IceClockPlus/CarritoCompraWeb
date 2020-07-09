@@ -1,1 +1,0 @@
-@ 2xmlXhrweb/WEB-INF/glassfish-web.xml
